@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage 
+		xmlns="http://xamarin.com/schemas/2014/forms"
+		xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+		xmlns:spiderBot="clr-namespace:SpiderBot"
+		x:Class="SpiderBot.GamePadPage">
+	<Grid>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="10"/>
+			<ColumnDefinition Width="*"/>
+			<ColumnDefinition Width="2*"/>
+			<ColumnDefinition Width="*"/>
+			<ColumnDefinition Width="10"/>
+		</Grid.ColumnDefinitions>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="10"/>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="*"/>
+			<RowDefinition Height="10"/>
+		</Grid.RowDefinitions>
+		<StackLayout Grid.Row = "1" Grid.Column="1" Grid.ColumnSpan="3" Orientation="Horizontal">
+			<Button Text="{Binding ConnectionText}" IsEnabled="{Binding CanConnect}" Command="{Binding ConnectCommand}" />
+			<Button Text="Wave" IsEnabled="{Binding IsConnected}" Command="{Binding WaveCommand}" />
+			<Button Text="Wiggle" IsEnabled="{Binding IsConnected}" Command="{Binding WiggleCommand}" />
+		</StackLayout>
+		<spiderBot:Joystick Grid.Column="1" Grid.Row="2" YValue="{Binding WalkYValue,Mode=TwoWay}"></spiderBot:Joystick>
+		<spiderBot:Joystick Grid.Column="3" Grid.Row="2" XValue="{Binding WalkXValue,Mode=TwoWay}"></spiderBot:Joystick>
+	</Grid>
+</ContentPage>
