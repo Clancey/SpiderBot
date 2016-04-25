@@ -55,7 +55,7 @@ namespace Xamarin.Forms.Platform.Android
 		}
 		void UpdateRadius()
 		{
-			BackgroundGradient?.SetCornerRadius((float)Element.BorderRadius*2);
+			BackgroundGradient?.SetCornerRadius((float)Element.BorderRadius * 4);
 		}
 	}
 }
