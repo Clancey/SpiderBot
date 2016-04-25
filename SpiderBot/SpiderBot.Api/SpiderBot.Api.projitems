@@ -15,5 +15,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)BotCommands\SequenceCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)BotCommands\WalkCommand.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)SpiderBotApi.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)BotCommands\HeightCommand.cs" />
   </ItemGroup>
 </Project>

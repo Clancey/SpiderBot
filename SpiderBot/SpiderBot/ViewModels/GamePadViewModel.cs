@@ -8,17 +8,24 @@ namespace SpiderBot
 {
 	public class GamePadViewModel : BaseViewModel
 	{
-
 		SpiderBotApi Api = new SpiderBotApi ();
+
 		public ICommand ConnectCommand {get;set;}
 		public ICommand WaveCommand { get; set; }
 		public ICommand WiggleCommand { get; set; }
+		public ICommand WormCommand { get; set; }
+		public ICommand DougieCommand { get; set; }
+		public ICommand SalsaCommand { get; set; }
+
 		public GamePadViewModel ()
 		{
 			Api.StateChanged += (s, e) => ConnectionStateUpdated ();
 			ConnectCommand = new Command (Connect);
 			WaveCommand = new Command (Wave);
 			WiggleCommand = new Command (Wiggle);
+			WormCommand = new Command(Worm);
+			DougieCommand = new Command(Dougie);
+			SalsaCommand = new Command(Salsa);
 		}
 
 		void ConnectionStateUpdated ()
@@ -29,6 +36,7 @@ namespace SpiderBot
 			ProcPropertyChanged (nameof (ConnectionText));
 			ProcPropertyChanged (nameof (CanConnect));
 		}
+
 		public bool IsConnected => Api?.IsConnected ?? false;
 		public bool IsDisconnected  => !IsConnected;
 		public bool IsConnecting => Api?.IsConnecting ?? false;
@@ -44,14 +52,25 @@ namespace SpiderBot
 					UpdateXValue();
 			}
 		}
-		float walkYValue;
 
+		float walkYValue;
 		public float WalkYValue {
 			get { return walkYValue; }
 
 			set {
 				if (ProcPropertyChanged (ref walkYValue, value))
 					UpdateYValue ();
+			}
+		}
+
+		int heightValue;
+		public int HeightValue
+		{
+			get { return heightValue; }
+			set
+			{
+				if (ProcPropertyChanged(ref heightValue, value))
+					UpdateHeightValue();
 			}
 		}
 
@@ -65,7 +84,12 @@ namespace SpiderBot
 		{
 			if(IsConnected)
 				await Api.SendCommand (new WalkCommand (Axis.Y) { Amount = WalkYValue });
+		}
 
+		async void UpdateHeightValue()
+		{
+			if (IsConnected)
+				await Api.SendCommand(new HeightCommand { Amount = HeightValue });
 		}
 
 		public async void Connect ()
@@ -86,6 +110,18 @@ namespace SpiderBot
 		{
 			await Api.SendCommand (new SequenceCommand { Sequence = Sequences.Wiggle });
 		}
+		public async void Worm()
+		{
+			await Api.SendCommand(new SequenceCommand { Sequence = Sequences.Worm });
+		}
+		public async void Dougie ()
+		{
+			await Api.SendCommand(new SequenceCommand { Sequence = Sequences.Dougie });
+		}
+		public async void Salsa()
+		{
+			await Api.SendCommand(new SequenceCommand { Sequence = Sequences.Salsa });
+		} 
 	}
 }
 

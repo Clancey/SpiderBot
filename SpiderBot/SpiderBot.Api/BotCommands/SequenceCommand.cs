@@ -8,7 +8,9 @@ namespace SpiderBot.BotCommands
 	{
 		Wave = 0,
 		Wiggle = 1,
-		Dougie = 2,
+		Worm = 2,
+		Dougie = 3,
+		Salsa = 4
 	}
     public class SequenceCommand : BotCommand
     {
@@ -37,13 +39,14 @@ namespace SpiderBot.BotCommands
 				case Sequences.Wave:
 				    CommandDurration = 5000;
 				    return;
-				case Sequences.Dougie:
-				    CommandDurration = 10000;
-				    return;
 				case Sequences.Wiggle:
 				    CommandDurration = 3500;
 				    return;
-
+				case Sequences.Worm:
+				case Sequences.Dougie:
+				case Sequences.Salsa:
+					CommandDurration = 10000;
+					return;
 		    }
 	    }
     }

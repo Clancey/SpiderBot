@@ -16,14 +16,20 @@
 			<RowDefinition Height="10"/>
 			<RowDefinition Height="Auto"/>
 			<RowDefinition Height="*"/>
-			<RowDefinition Height="10"/>
+			<RowDefinition Height="50"/>
 		</Grid.RowDefinitions>
 		<StackLayout Grid.Row = "1" Grid.Column="1" Grid.ColumnSpan="3" Orientation="Horizontal">
 			<Button Text="{Binding ConnectionText}" IsEnabled="{Binding CanConnect}" Command="{Binding ConnectCommand}" />
 			<Button Text="Wave" IsEnabled="{Binding IsConnected}" Command="{Binding WaveCommand}" />
 			<Button Text="Wiggle" IsEnabled="{Binding IsConnected}" Command="{Binding WiggleCommand}" />
+			<Button Text="Worm" IsEnabled="{Binding IsConnected}" Command="{Binding WormCommand}" />
+			<Button Text="Dougie" IsEnabled="{Binding IsConnected}" Command="{Binding DougieCommand}" />
+			<Button Text="Salsa" IsEnabled="{Binding IsConnected}" Command="{Binding SalsaCommand}" />
 		</StackLayout>
+		
 		<spiderBot:Joystick Grid.Column="1" Grid.Row="2" YValue="{Binding WalkYValue,Mode=TwoWay}"></spiderBot:Joystick>
+		<Slider Grid.Column="2" Grid.Row="2" Value="{Binding HeightValue}" Minimum="0" Maximum="100" />
 		<spiderBot:Joystick Grid.Column="3" Grid.Row="2" XValue="{Binding WalkXValue,Mode=TwoWay}"></spiderBot:Joystick>
+	
 	</Grid>
 </ContentPage>

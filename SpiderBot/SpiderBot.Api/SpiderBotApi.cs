@@ -78,8 +78,8 @@ namespace SpiderBot
 			{
 				Console.WriteLine(ex);
 			}
-			return false;
 
+			return false;
 		}
 
 		Task heartBeat;
@@ -93,7 +93,6 @@ namespace SpiderBot
 			}
 			StateChanged?.Invoke(this, EventArgs.Empty);
 		}
-
 
 		public Action<string> MessageRecieved { get; set; }
 		bool IsListening { get; set; }
