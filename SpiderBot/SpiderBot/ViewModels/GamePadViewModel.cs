@@ -76,6 +76,39 @@ namespace SpiderBot
 			}
 		}
 
+		int redColorValue;
+		public int RedColorValue
+		{
+			get { return redColorValue; }
+			set
+			{
+				if (ProcPropertyChanged(ref redColorValue, value))
+					UpdateEyeColor();
+			}
+		}
+
+		int greenColorValue;
+		public int GreenColorValue
+		{
+			get { return greenColorValue; }
+			set
+			{
+				if (ProcPropertyChanged(ref greenColorValue, value))
+					UpdateEyeColor();
+			}
+		}
+
+		int blueColorValue;
+		public int BlueColorValue
+		{
+			get { return blueColorValue; }
+			set
+			{
+				if (ProcPropertyChanged(ref blueColorValue, value))
+					UpdateEyeColor();
+			}
+		}
+
 		async void UpdateXValue ()
 		{
             if (NotInTransition)
@@ -93,7 +126,13 @@ namespace SpiderBot
             if (NotInTransition)
 				await Api.SendCommand(new HeightCommand { Amount = HeightValue });
 		}
-            
+
+		async void UpdateEyeColor()
+		{
+			if (IsConnected)
+				await Api.SendCommand(new ChangeColorCommand() { Red = RedColorValue, Green = GreenColorValue, Blue = BlueColorValue });
+		}
+
 		public async void Wave ()
 		{
 			await Api.SendCommand (new SequenceCommand { Sequence = Sequences.Wave });

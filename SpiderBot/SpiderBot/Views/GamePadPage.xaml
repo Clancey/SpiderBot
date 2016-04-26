@@ -16,8 +16,9 @@
 			<RowDefinition Height="10"/>
 			<RowDefinition Height="Auto"/>
 			<RowDefinition Height="*"/>
-			<RowDefinition Height="50"/>
+			<RowDefinition Height="125"/>
 		</Grid.RowDefinitions>
+		
 		<StackLayout Grid.Row = "1" Grid.Column="1" Grid.ColumnSpan="3" Orientation="Horizontal">
 			<Label Text="{Binding ConnectionText}" />
 			<Button Text="Wave" IsEnabled="{Binding NotInTransition}" Command="{Binding WaveCommand}" />
@@ -30,6 +31,12 @@
 		<spiderBot:Joystick Grid.Column="1" Grid.Row="2" YValue="{Binding WalkYValue,Mode=TwoWay}"></spiderBot:Joystick>
 		<Slider Grid.Column="2" Grid.Row="2" Value="{Binding HeightValue}" Minimum="0" Maximum="100" />
 		<spiderBot:Joystick Grid.Column="3" Grid.Row="2" XValue="{Binding WalkXValue,Mode=TwoWay}"></spiderBot:Joystick>
-	
+
+		<StackLayout Grid.Row = "3" Grid.Column="2">
+			<Slider Value="{Binding RedColorValue}" Minimum="0" Maximum="100" />
+			<Slider Value="{Binding GreenColorValue}" Minimum="0" Maximum="100" />
+			<Slider Value="{Binding BlueColorValue}" Minimum="0" Maximum="100" />
+		</StackLayout>
+
 	</Grid>
 </ContentPage>
