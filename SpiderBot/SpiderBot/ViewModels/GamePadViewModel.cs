@@ -21,7 +21,6 @@ namespace SpiderBot
 		public GamePadViewModel ()
 		{
 			Api.StateChanged += (s, e) => ConnectionStateUpdated ();
-			ConnectCommand = new Command (Connect);
 			WaveCommand = new Command (Wave);
 			WiggleCommand = new Command (Wiggle);
 			WormCommand = new Command(Worm);
