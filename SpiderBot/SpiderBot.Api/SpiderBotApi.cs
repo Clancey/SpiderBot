@@ -13,6 +13,8 @@ namespace SpiderBot
 		ClientWebSocket Socket;
 		const string DefaultHost = "192.168.1.1";
 		const int DefaultPort = 9300;
+        bool connected;
+
 		public SpiderBotApi()
 		{
 
@@ -20,9 +22,11 @@ namespace SpiderBot
 
 		public event EventHandler StateChanged;
 		CancellationTokenSource cancelToken;
+
 		public async Task<bool> Connect(string host = DefaultHost, int port = DefaultPort)
 		{
-			try {
+			try 
+            {
 				IsConnecting = true;
 				StateChanged?.Invoke (this, EventArgs.Empty);
 				Socket = new ClientWebSocket ();
@@ -34,6 +38,7 @@ namespace SpiderBot
 				//listentingTask = StartListening();
 				heartBeat = HeartBeat ();
 				StateChanged?.Invoke (this, EventArgs.Empty);
+                connected = true;
 				return Socket.State == WebSocketState.Open;
 			} catch (Exception ex) {
 				Console.WriteLine (ex);
@@ -47,27 +52,65 @@ namespace SpiderBot
 
 		public bool IsConnected
 		{
-			get { return Socket?.State == WebSocketState.Open;}
+            get { return connected && Socket?.State == WebSocketState.Open;}
 		}
 
 		public async Task<bool> Close()
 		{
-			await Socket.CloseAsync(WebSocketCloseStatus.NormalClosure, "Closing", CancellationToken.None);
-			cancelToken.Cancel();
-			return true;
+            connected = false;
+
+            try 
+            {
+    			await Socket.CloseAsync(WebSocketCloseStatus.NormalClosure, "Closing", CancellationToken.None);
+    			cancelToken.Cancel();
+                StateChanged?.Invoke (this, EventArgs.Empty);
+    			return true;
+            }
+            catch (Exception exc)
+            {
+                StateChanged?.Invoke (this, EventArgs.Empty);
+            }
+
+            return false;
 		}
 
 		public async Task<bool> SendCommand(BotCommand command)
 		{
-			var message = $"[\"command\",{{\"command\":\"{command.ToString()}\"}}]";
-            var success = await SendMessage(message);
-			if (success && command.CommandDurration > 0)
-				await Task.Delay(command.CommandDurration);
-			return success;
+            if (!connected)
+            {
+                if (!await Connect ())
+                {
+                    Console.WriteLine ("Could not connect");
+                    return false;
+                }
+            }
+
+            return await SendCommandInternal (command);
 		}
 
-		public async Task<bool> SendMessage(string message)
-		{
+        private async Task<bool> SendCommandInternal(BotCommand command)
+        {
+            try
+            {
+                var message = $"[\"command\",{{\"command\":\"{command.ToString()}\"}}]";
+                var success = await SendMessage(message);
+                if (success && command.CommandDurration > 0)
+                    await Task.Delay(command.CommandDurration);
+                else if (!success)
+                    await Close();
+                return success;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+            }
+
+            await Close ();
+            return false;
+        }
+
+		private async Task<bool> SendMessage(string message)
+		{            
 			try
 			{
 				var packet = Encoding.UTF8.GetBytes(message);
@@ -79,6 +122,7 @@ namespace SpiderBot
 				Console.WriteLine(ex);
 			}
 
+            await Close ();
 			return false;
 		}
 
@@ -86,9 +130,9 @@ namespace SpiderBot
 		readonly BotCommand HeartBeatCommand = new BotCommand {Command = BotCommandsConstants.HeartBeat};
 		async Task HeartBeat()
 		{
-			while (Socket.State == WebSocketState.Open)
+			while (connected && Socket.State == WebSocketState.Open)
 			{
-				await SendCommand(HeartBeatCommand);
+				await SendCommandInternal(HeartBeatCommand);
 				await Task.Delay(1000);
 			}
 			StateChanged?.Invoke(this, EventArgs.Empty);
