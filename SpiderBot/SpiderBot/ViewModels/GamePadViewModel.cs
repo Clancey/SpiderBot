@@ -64,6 +64,26 @@ namespace SpiderBot
 			}
 		}
 
+		float tailXValue;
+		public float TailXValue {
+			get { return tailXValue; }
+
+			set {
+				if (ProcPropertyChanged (ref tailXValue, value))
+					UpdateXValue ();
+			}
+		}
+
+		float tailYValue;
+		public float TailYValue {
+			get { return tailYValue; }
+
+			set {
+				if (ProcPropertyChanged (ref tailYValue, value))
+					UpdateYValue ();
+			}
+		}
+
 		int heightValue = 50;
 		public int HeightValue
 		{
