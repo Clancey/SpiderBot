@@ -12,7 +12,15 @@ namespace SpiderBot
 		public App ()
 		{
 			// The root page of your application
-			MainPage = new GamePadPage { BindingContext = new GamePadViewModel() };
+            var viewModel =  new GamePadViewModel();
+            MainPage = new GamePadPage { BindingContext = viewModel};
+
+            // Hack to allow the app some time to startup before allowing the joystick to work.
+            Device.StartTimer(TimeSpan.FromSeconds (3), () =>
+            {
+                viewModel.Initialized = true;
+                return false;
+            });
 		}
 
 		protected override void OnStart ()

@@ -16,6 +16,7 @@ namespace SpiderBot
 		public ICommand WormCommand { get; set; }
 		public ICommand DougieCommand { get; set; }
 		public ICommand SalsaCommand { get; set; }
+        public bool Initialized { get; set; }
 
 		public GamePadViewModel ()
 		{
@@ -37,11 +38,12 @@ namespace SpiderBot
 			ProcPropertyChanged (nameof (CanConnect));
 		}
 
-		public bool IsConnected => Api?.IsConnected ?? false;
+        public bool NotInTransition => !IsConnecting && Initialized;
+        public bool IsConnected => Api?.IsConnected ?? false;
 		public bool IsDisconnected  => !IsConnected;
 		public bool IsConnecting => Api?.IsConnecting ?? false;
 		public bool CanConnect => !IsConnecting;
-		public string ConnectionText => IsConnecting ? "Connecting" : IsConnected ? "Disconnect" : "Connect";
+		public string ConnectionText => IsConnecting ? "Connecting" : IsConnected ? "Connected" : "Disconnected";
 
 		float walkXValue;
 		public float WalkXValue {
@@ -76,32 +78,22 @@ namespace SpiderBot
 
 		async void UpdateXValue ()
 		{
-			if(IsConnected)
+            if (NotInTransition)
 				await Api.SendCommand (new WalkCommand (Axis.X) { Amount = WalkXValue });
 		}
 
 		async void UpdateYValue ()
 		{
-			if(IsConnected)
+            if (NotInTransition)
 				await Api.SendCommand (new WalkCommand (Axis.Y) { Amount = WalkYValue });
 		}
 
 		async void UpdateHeightValue()
 		{
-			if (IsConnected)
+            if (NotInTransition)
 				await Api.SendCommand(new HeightCommand { Amount = HeightValue });
 		}
-
-		public async void Connect ()
-		{
-			if (IsConnecting)
-				return;
-			if (IsConnected)
-				await Api.Close ();
-			else
-				await Api.Connect ();
-		}
-
+            
 		public async void Wave ()
 		{
 			await Api.SendCommand (new SequenceCommand { Sequence = Sequences.Wave });
