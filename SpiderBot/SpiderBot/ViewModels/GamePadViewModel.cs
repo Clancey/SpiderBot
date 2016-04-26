@@ -70,7 +70,7 @@ namespace SpiderBot
 
 			set {
 				if (ProcPropertyChanged (ref tailXValue, value))
-					UpdateXValue ();
+					UpdateTailXValue ();
 			}
 		}
 
@@ -80,7 +80,7 @@ namespace SpiderBot
 
 			set {
 				if (ProcPropertyChanged (ref tailYValue, value))
-					UpdateYValue ();
+					UpdateTailYValue ();
 			}
 		}
 
@@ -95,7 +95,7 @@ namespace SpiderBot
 			}
 		}
 
-		int redColorValue;
+		int redColorValue = 50;
 		public int RedColorValue
 		{
 			get { return redColorValue; }
@@ -106,7 +106,7 @@ namespace SpiderBot
 			}
 		}
 
-		int greenColorValue;
+		int greenColorValue = 50;
 		public int GreenColorValue
 		{
 			get { return greenColorValue; }
@@ -117,7 +117,7 @@ namespace SpiderBot
 			}
 		}
 
-		int blueColorValue;
+		int blueColorValue = 50;
 		public int BlueColorValue
 		{
 			get { return blueColorValue; }
@@ -138,6 +138,18 @@ namespace SpiderBot
 		{
             if (NotInTransition)
 				await Api.SendCommand (new WalkCommand (Axis.Y) { Amount = WalkYValue });
+		}
+
+		async void UpdateTailXValue()
+		{
+			if (NotInTransition)
+				await Api.SendCommand(new TailCommand(Axis.X) { Amount = TailXValue });
+		}
+
+		async void UpdateTailYValue()
+		{
+			if (NotInTransition)
+				await Api.SendCommand(new TailCommand(Axis.Y) { Amount = TailYValue });
 		}
 
 		async void UpdateHeightValue()

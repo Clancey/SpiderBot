@@ -13,11 +13,8 @@ namespace SpiderBot
 	    public const string ChangeColor = "changeLEDColor";
 	    public const string MoveBody = "joystickTranslateBodyTo";
 	    public const string RotateBody = "joystickRotateBodyTo";
-
 		public const string MoveTail = "joystickMoveTail";
 	    public const string StartSequence = "builtInSequences";
 	    public const string StopSequence = "stopBuiltInSequence";
-
-
     }
 }

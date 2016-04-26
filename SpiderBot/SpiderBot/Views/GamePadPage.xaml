@@ -16,11 +16,10 @@
 			<RowDefinition Height="10"/>
 			<RowDefinition Height="Auto"/>
 			<RowDefinition Height="*"/>
-			<RowDefinition Height="125"/>
+			<RowDefinition Height="25"/>
 		</Grid.RowDefinitions>
 		
-		<StackLayout Grid.Row = "1" Grid.Column="1" Grid.ColumnSpan="3" Orientation="Horizontal">
-			<Label Text="{Binding ConnectionText}" />
+		<StackLayout Grid.Row = "1" Grid.Column="1" Grid.ColumnSpan="3" Orientation="Horizontal" HorizontalOptions="CenterAndExpand">
 			<Button Text="Wave" IsEnabled="{Binding NotInTransition}" Command="{Binding WaveCommand}" />
 			<Button Text="Wiggle" IsEnabled="{Binding NotInTransition}" Command="{Binding WiggleCommand}" />
 			<Button Text="Worm" IsEnabled="{Binding NotInTransition}" Command="{Binding WormCommand}" />
@@ -28,15 +27,35 @@
 			<Button Text="Salsa" IsEnabled="{Binding NotInTransition}" Command="{Binding SalsaCommand}" />
 		</StackLayout>
 		
-		<spiderBot:Joystick Grid.Column="1" Grid.Row="2" XValue="{Binding WalkXValue,Mode=TwoWay}" YValue="{Binding WalkYValue,Mode=TwoWay}"></spiderBot:Joystick>
-		<Slider Grid.Column="2" Grid.Row="2" Value="{Binding HeightValue}" Minimum="0" Maximum="100" />
-		<spiderBot:Joystick Grid.Column="3" Grid.Row="2" XValue="{Binding TailXValue,Mode=TwoWay}" YValue="{Binding TailYValue,Mode=TwoWay}"></spiderBot:Joystick>
+		<spiderBot:Joystick Grid.Column="1" Grid.Row="2" XValue="{Binding WalkXValue,Mode=TwoWay}" YValue="{Binding WalkYValue,Mode=TwoWay}" Text="Move"></spiderBot:Joystick>
 
-		<StackLayout Grid.Row = "3" Grid.Column="2">
-			<Slider Value="{Binding RedColorValue}" Minimum="0" Maximum="100" />
-			<Slider Value="{Binding GreenColorValue}" Minimum="0" Maximum="100" />
-			<Slider Value="{Binding BlueColorValue}" Minimum="0" Maximum="100" />
+		<StackLayout Grid.Column="2" Grid.Row="2" VerticalOptions="CenterAndExpand" Padding="10, 0, 10, 0">
+			<Label Text="Height" FontSize="12" />
+			<Slider Value="{Binding HeightValue}" Minimum="0" Maximum="100" />
+			<Label Text="Eye Color" FontSize="12" />
+			<Grid>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="10"/>
+					<ColumnDefinition Width="Auto"/>
+				</Grid.ColumnDefinitions>
+				<Grid.RowDefinitions>
+					<RowDefinition Height="Auto" />
+					<RowDefinition Height="Auto" />
+					<RowDefinition Height="Auto" />
+				</Grid.RowDefinitions>
+
+				<Label Grid.Row="1" Grid.Column="1" Text="Red" TextColor="Red" FontSize="10" VerticalTextAlignment="Center" />
+				<Slider Grid.Row="1" Grid.Column="2" Value="{Binding RedColorValue}" Minimum="0" Maximum="100" />
+				<Label Grid.Row="2" Grid.Column="1" Text="Green" TextColor="Green" FontSize="10" VerticalTextAlignment="Center" />
+				<Slider Grid.Row="2" Grid.Column="2" Value="{Binding GreenColorValue}" Minimum="0" Maximum="100" />
+				<Label Grid.Row="3" Grid.Column="1" Text="Blue" TextColor="Blue" FontSize="10" VerticalTextAlignment="Center" />
+				<Slider Grid.Row="3" Grid.Column="2" Value="{Binding BlueColorValue}" Minimum="0" Maximum="100" />
+			</Grid>
 		</StackLayout>
 
+		<spiderBot:Joystick Grid.Column="3" Grid.Row="2" XValue="{Binding TailXValue,Mode=TwoWay}" YValue="{Binding TailYValue,Mode=TwoWay}" Text="Tail"></spiderBot:Joystick>
+
+		<Label Grid.Row="3" Grid.Column="3" Text="{Binding ConnectionText}" FontSize="12" VerticalOptions="End" HorizontalOptions="End" />
+		
 	</Grid>
 </ContentPage>

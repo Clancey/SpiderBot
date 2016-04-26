@@ -2,26 +2,18 @@
 
 namespace SpiderBot.BotCommands
 {
-	public enum Axis
+	public class TailCommand : BotCommand
 	{
-		X,
-		Y
-	}
-
-	public class WalkCommand : BotCommand
-	{
-
-
 		readonly Axis axis;
 		float amount;
 
-		public WalkCommand(Axis axis)
+		public TailCommand(Axis axis)
 		{
 			this.axis = axis;
-			Command = axis == Axis.X
-				? BotCommandsConstants.WalkX
-				: BotCommandsConstants.WalkY;
-			Parameters = new List<string>(){ "zero" };
+
+			Command = BotCommandsConstants.MoveTail;
+			
+			Parameters = new List<string>() { (axis == Axis.X ? "0" : "1"), "0" };
 		}
 
 		const int zero = 100;
@@ -36,7 +28,7 @@ namespace SpiderBot.BotCommands
 			set
 			{
 				amount = value;
-				Parameters[0] = ((Amount*range * (axis == Axis.X ? -1 : 1)) + zero).ToString();
+				Parameters[1] = ((Amount * range * (axis == Axis.X ? -1 : 1)) + zero).ToString();
 			}
 		}
 	}
