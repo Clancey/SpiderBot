@@ -64,7 +64,7 @@ namespace SpiderBot
 			}
 		}
 
-		int heightValue;
+		int heightValue = 50;
 		public int HeightValue
 		{
 			get { return heightValue; }
